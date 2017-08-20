@@ -9,6 +9,7 @@ dependencies:
     - ~/.cache/yarn
     - test/fixture/elm-stuff
   pre:
+    - rm -rf test/fixture/elm-stuff/build-artifacts
     - if [ ! -d sysconfcpus/bin ];
       then
         git clone https://github.com/obmarg/libsysconfcpus.git;
@@ -19,8 +20,8 @@ dependencies:
       fi
   override:
     - yarn
-    - rm -rf test/fixture/elm-stuff/build-artifacts
-    - sysconfcpus/bin/sysconfcpus -n 2 elm-make
+    - mv node_modules/.bin/elm-make node_modules/.bin/elm-make-old
+    - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' 'sysconfcpus/bin/sysconfcpus -n 2 elm-make-old "$@"' > node_modules/.bin/elm-make
 
 test:
   override:
