@@ -1,15 +1,71 @@
-# gulp-elm-find-dependencies [![Circle CI](https://circleci.com/gh/farism/gulp-elm-find-dependencies/tree/master.svg?style=svg)](https://circleci.com/gh/farism/gulp-elm-find-dependencies/tree/master)
+# gulp-elm-css [![Circle CI](https://circleci.com/gh/farism/gulp-elm-css/tree/master.svg?style=svg)](https://circleci.com/gh/farism/gulp-elm-css/tree/master)
 
-Given an `*.elm` file, it will use [`find-elm-dependencies`](https://github.com/NoRedInk/find-elm-dependencies) to aggregate all of the dependencies for that tree. For each file found it will emit a vinyl object.
+Given an `*.elm` file, it will use [`elm-css`](https://github.com/rtfeldman/elm-css) to generate `*.css` files. A vinyl object will be emitted for each `*.css` file that is generated.
 
 #### Example
 
-```js
-const elmFindDependencies = require('gulp-elm-find-dependencies')
+on the elm side
 
-gulp.task('find-deps', () => {
-  return gulp.src('Main.elm')
-    .pipe(elmFindDependencies())
-    .pipe(gulp.dest('dependencies'))
+```elm
+-- HomeCss.elm
+
+module HomeCss exposing (..)
+
+import Css exposing (..)
+import Css.Namespace exposing (namespace)
+
+
+type CssIds
+    = Home
+
+
+css =
+    (stylesheet << namespace "home")
+        [ id Home
+            [ backgroundColor (hex "000000")
+            , color (hex "FFFFFF")
+            ]
+        ]
+
+```
+```elm
+-- MyStyles.elm
+
+port module MyStyles exposing (..)
+
+import Css.File exposing (CssFileStructure, CssCompilerProgram)
+import AboutCss
+import HomeCss
+import SharedCss
+
+
+port files : CssFileStructure -> Cmd msg
+
+
+fileStructure : CssFileStructure
+fileStructure =
+    Css.File.toFileStructure
+        [ ( "shared.css", Css.File.compile [ SharedCss.css ] )
+        , ( "home.css", Css.File.compile [ HomeCss.css ] )
+        , ( "about.css", Css.File.compile [ AboutCss.css ] )
+        ]
+
+
+main : CssCompilerProgram
+main =
+    Css.File.compiler files fileStructure
+
+```
+
+on the gulp side
+
+```js
+const elmCss = require('gulp-elm-css')
+
+gulp.task('compile-css', () => {
+  return gulp.src('MyStyles.elm')
+    .pipe(elmCss({ module: 'MyStyles '}))
+    .pipe(cssnano())
+    .pipe(gulp.dest('build'))
 })
 ```

@@ -12,7 +12,11 @@
     "type": "git",
     "url": "git+https://github.com/farism/gulp-elm-css.git"
   },
-  "keywords": ["gulpplugin", "elm", "elm-css"],
+  "keywords": [
+    "gulpplugin",
+    "elm",
+    "elm-css"
+  ],
   "author": "Faris Mustafa <farismmk@gmail.com>",
   "license": "MIT",
   "bugs": {
@@ -31,6 +35,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.1",
+    "elm": "^0.18.0",
     "husky": "^0.14.3",
     "lint-staged": "^4.0.3",
     "mocha": "^3.5.0",
