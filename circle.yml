@@ -7,8 +7,7 @@ machine:
 dependencies:
   cache_directories:
     - ~/.cache/yarn
-    - test/fixture/elm-stuff
-  override:
+  pre:
     - if [ ! -d sysconfcpus/bin ];
       then
         git clone https://github.com/obmarg/libsysconfcpus.git;
@@ -17,7 +16,10 @@ dependencies:
         make && make install;
         cd ..;
       fi
+  override:
     - yarn
+    - mv node_modules/.bin/elm-make node_modules/.bin/elm-make-old
+    - sysconfcpus/bin/sysconfcpus -n 2 elm-make-old "$@"' > $(npm config get prefix)/bin/elm-make
 
 test:
   override:
