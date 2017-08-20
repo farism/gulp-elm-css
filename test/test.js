@@ -20,26 +20,31 @@ describe('gulp-elm-css', function() {
   })
 
   it('should work in buffer mode', function(done) {
-    function assertContents(index, file) {
-      const filePath = path.join(__dirname, 'fixture', 'dist', file)
+    try {
+      function assertContents(index, file) {
+        const filePath = path.join(__dirname, 'fixture', 'dist', file)
 
-      return assert.nth(index, function(dep) {
-        expect(dep.contents).to.eql(fs.readFileSync(filePath))
-      })
+        return assert.nth(index, function(dep) {
+          expect(dep.contents).to.eql(fs.readFileSync(filePath))
+        })
+      }
+
+      stream
+        .pipe(assertContents(0, '1.css'))
+        .pipe(assertContents(1, '2.css'))
+        .pipe(assertContents(2, '3.css'))
+        .pipe(assert.end(done))
+      stream.write(
+        new File({
+          path: fixture('Stylesheets.elm'),
+          contents: fs.readFileSync(fixture('Stylesheets.elm')),
+        })
+      )
+      stream.end()
+    } catch (e) {
+      console.error(e)
+      done()
     }
-
-    stream
-      .pipe(assertContents(0, '1.css'))
-      .pipe(assertContents(1, '2.css'))
-      .pipe(assertContents(2, '3.css'))
-      .pipe(assert.end(done))
-    stream.write(
-      new File({
-        path: fixture('Stylesheets.elm'),
-        contents: fs.readFileSync(fixture('Stylesheets.elm')),
-      })
-    )
-    stream.end()
   })
 
   it('should emit error on streamed file', done => {
