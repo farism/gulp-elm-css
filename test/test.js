@@ -12,26 +12,26 @@ const fixture = function(glob) {
   return path.join(__dirname, 'fixture', 'src', glob)
 }
 
-const fixtureOutput = function(glob) {
-  return path.join(__dirname, 'fixture', 'dist', glob)
-}
-
 describe('gulp-elm-css', function() {
   var stream
 
   beforeEach(function() {
-    stream = elmCss({cwd: path.join(__dirname, 'fixture')})
+    stream = elmCss({ cwd: path.join(__dirname, 'fixture') })
   })
 
   it('should work in buffer mode', function(done) {
+    function assertContents(index, file) {
+      const filePath = path.join(__dirname, 'fixture', 'dist', file)
+
+      return assert.nth(index, function(dep) {
+        expect(dep.contents).to.eql(fs.readFileSync(filePath))
+      })
+    }
+
     stream
-      .pipe(
-        assert.nth(0, dep =>
-          expect(String(dep.contents)).to.equal(
-            String(fs.readFileSync(fixtureOutput('1.css')))
-          )
-        )
-      )
+      .pipe(assertContents(0, '1.css'))
+      .pipe(assertContents(1, '2.css'))
+      .pipe(assertContents(2, '3.css'))
       .pipe(assert.end(done))
     stream.write(
       new File({
@@ -56,6 +56,23 @@ describe('gulp-elm-css', function() {
         return true
       },
     })
+    stream.end()
+  })
+
+  it('should emit error if elm-css fails', done => {
+    stream
+      .once('error', function(err) {
+        expect(err.message).to.equal(
+          'gulp-elm-css: elm-css Errored with exit code 1'
+        )
+      })
+      .pipe(assert.end(done))
+    stream.write(
+      new File({
+        path: fixture('Stylesheets2.elm'),
+        contents: Buffer(''),
+      })
+    )
     stream.end()
   })
 

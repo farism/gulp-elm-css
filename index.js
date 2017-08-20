@@ -27,11 +27,16 @@ module.exports = function(options) {
     }
 
     const opts = Object.assign({}, defaults, options)
-    const tmpDir = tmp.dirSync({unsafeCleanup: true})
+    const tmpDir = tmp.dirSync({ unsafeCleanup: true })
     const dir = opts.out || tmpDir.name
     const _this = this
 
     elmCss(opts.cwd, file.path, dir, opts.module, opts.port)
+      .catch(function(e) {
+        tmpDir.removeCallback()
+        _this.emit('error', new Error('gulp-elm-css: elm-css ' + e.message))
+        callback()
+      })
       .then(function() {
         return glob(`${dir}/*.css`)
       })
@@ -55,15 +60,10 @@ module.exports = function(options) {
               })
             })
           })
-        )
-          .then(function() {
-            tmpDir.removeCallback()
-            callback()
-          })
-          .catch(function(e) {
-            tmpDir.removeCallback()
-            callback()
-          })
+        ).then(function() {
+          tmpDir.removeCallback()
+          callback()
+        })
       })
   }
 
