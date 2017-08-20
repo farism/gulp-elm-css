@@ -1,0 +1,40 @@
+{
+  "name": "gulp-elm-css",
+  "version": "0.1.0",
+  "description": "A gulp plugin wrapping the elm-css module",
+  "main": "index.js",
+  "scripts": {
+    "precommit": "lint-staged",
+    "pretty": "prettier --write --no-semi --single-quote --trailing-comma es5",
+    "test": "mocha ./test/**.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/farism/gulp-elm-css.git"
+  },
+  "keywords": ["gulpplugin", "elm", "elm-css"],
+  "author": "Faris Mustafa <farismmk@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/farism/gulp-elm-css/issues"
+  },
+  "homepage": "https://github.com/farism/gulp-elm-css#readme",
+  "engines": {
+    "node": ">=4.2.0"
+  },
+  "dependencies": {
+    "elm-css": "^0.6.1",
+    "glob-promise": "^3.1.0",
+    "through2": "^2.0.3",
+    "tmp": "^0.0.33",
+    "vinyl": "^2.1.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.1",
+    "husky": "^0.14.3",
+    "lint-staged": "^4.0.3",
+    "mocha": "^3.5.0",
+    "prettier": "^1.5.3",
+    "stream-assert": "^2.0.3"
+  }
+}
