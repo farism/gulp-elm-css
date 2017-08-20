@@ -7,6 +7,7 @@ machine:
 dependencies:
   cache_directories:
     - ~/.cache/yarn
+    - test/fixture/elm-stuff
   pre:
     - if [ ! -d sysconfcpus/bin ];
       then
@@ -18,8 +19,8 @@ dependencies:
       fi
   override:
     - yarn
-    - mv node_modules/.bin/elm-make node_modules/.bin/elm-make-old
-    - sysconfcpus/bin/sysconfcpus -n 2 elm-make-old "$@" > node_modules/.bin/elm-make
+    - rm -rf test/fixture/elm-stuff/build-artifacts
+    - sysconfcpus/bin/sysconfcpus -n 2 elm-make
 
 test:
   override:
