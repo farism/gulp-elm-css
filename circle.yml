@@ -21,7 +21,8 @@ dependencies:
   override:
     - yarn
     - mv node_modules/.bin/elm-make node_modules/.bin/elm-make-old
-    - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' '${HOME}/${CIRCLE_PROJECT_REPONAME}sysconfcpus/bin/sysconfcpus -n 2 elm-make-old "$@"' > node_modules/.bin/elm-make
+    - chmod +x node_modules/.bin/elm-make-old
+    - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' '${HOME}/${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old "$@"' > ${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin/elm-make
     - chmod +x node_modules/.bin/elm-make
 
 test:
