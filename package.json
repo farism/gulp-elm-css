@@ -6,7 +6,7 @@
   "scripts": {
     "precommit": "lint-staged",
     "pretty": "prettier --write --no-semi --single-quote --trailing-comma es5",
-    "test": "mocha --timeout 15000 ./test/**.js"
+    "test": "mocha ./test/**.js"
   },
   "repository": {
     "type": "git",

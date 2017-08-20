@@ -20,31 +20,28 @@ describe('gulp-elm-css', function() {
   })
 
   it('should work in buffer mode', function(done) {
-    try {
-      function assertContents(index, file) {
-        const filePath = path.join(__dirname, 'fixture', 'dist', file)
+    this.timeout(6000000)
 
-        return assert.nth(index, function(dep) {
-          expect(dep.contents).to.eql(fs.readFileSync(filePath))
-        })
-      }
+    function assertContents(index, file) {
+      const filePath = path.join(__dirname, 'fixture', 'dist', file)
 
-      stream
-        .pipe(assertContents(0, '1.css'))
-        .pipe(assertContents(1, '2.css'))
-        .pipe(assertContents(2, '3.css'))
-        .pipe(assert.end(done))
-      stream.write(
-        new File({
-          path: fixture('Stylesheets.elm'),
-          contents: fs.readFileSync(fixture('Stylesheets.elm')),
-        })
-      )
-      stream.end()
-    } catch (e) {
-      console.error(e)
-      done()
+      return assert.nth(index, function(dep) {
+        expect(dep.contents).to.eql(fs.readFileSync(filePath))
+      })
     }
+
+    stream
+      .pipe(assertContents(0, '1.css'))
+      .pipe(assertContents(1, '2.css'))
+      .pipe(assertContents(2, '3.css'))
+      .pipe(assert.end(done))
+    stream.write(
+      new File({
+        path: fixture('Stylesheets.elm'),
+        contents: fs.readFileSync(fixture('Stylesheets.elm')),
+      })
+    )
+    stream.end()
   })
 
   it('should emit error on streamed file', done => {
@@ -65,6 +62,8 @@ describe('gulp-elm-css', function() {
   })
 
   it('should emit error if elm-css fails', done => {
+    this.timeout(6000000)
+
     stream
       .once('error', function(err) {
         expect(err.message).to.equal(
