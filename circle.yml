@@ -1,15 +1,12 @@
 machine:
-  environment:
-    PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
   node:
     version: 4.2.0
 
 dependencies:
   cache_directories:
     - ~/.cache/yarn
-    - test/fixture/elm-stuff
+    - sysconfcpus
   pre:
-    - rm -rf test/fixture/elm-stuff/build-artifacts
     - if [ ! -d sysconfcpus/bin ];
       then
         git clone https://github.com/obmarg/libsysconfcpus.git;
@@ -19,11 +16,11 @@ dependencies:
         cd ..;
       fi
   override:
+    - yarn global add elm@0.18.0
+    # - mv node_modules/.bin/elm-make node_modules/.bin/elm-make-old
+    # - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' '${HOME}/${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 ${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin/elm-make-old "$@"' > ${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin/elm-make
+    # - chmod +x node_modules/.bin/elm-make
     - yarn
-    - mv node_modules/.bin/elm-make node_modules/.bin/elm-make-old
-    - chmod +x node_modules/.bin/elm-make-old
-    - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' '${HOME}/${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old "$@"' > ${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin/elm-make
-    - chmod +x node_modules/.bin/elm-make
 
 test:
   override:

@@ -35,7 +35,6 @@
   },
   "devDependencies": {
     "chai": "^4.1.1",
-    "elm": "^0.18.0",
     "husky": "^0.14.3",
     "lint-staged": "^4.0.3",
     "mocha": "^3.5.0",
