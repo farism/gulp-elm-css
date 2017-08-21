@@ -1,4 +1,7 @@
 machine:
+  environment:
+    NPM_BIN_PATH: ${HOME}/.config/yarn/global/node_modules/.bin
+    PATH: "$PATH:{NPM_BIN_PATH}"
   node:
     version: 4.2.0
 
@@ -17,9 +20,9 @@ dependencies:
       fi
   override:
     - yarn global add elm@0.18.0
-    # - mv node_modules/.bin/elm-make node_modules/.bin/elm-make-old
-    # - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' '${HOME}/${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 ${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin/elm-make-old "$@"' > ${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin/elm-make
-    # - chmod +x node_modules/.bin/elm-make
+    - mv ${NPM_BIN_PATH}/elm-make ${NPM_BIN_PATH}/elm-make-old
+    - printf '%s\n\n' '#!/bin/bash' 'echo "Running elm-make with sysconfcpus -n 2"' '${HOME}/${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old "$@"' > elm-make
+    - chmod +x node_modules/.bin/elm-make
     - yarn
 
 test:
