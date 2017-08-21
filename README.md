@@ -11,7 +11,7 @@ gulp.src('Css.elm')
   .pipe(elmCss({ module: 'Css.elm' }))
 ```
 
-###### < options >
+#### Options
 ```js
 options = {
   root: process.cwd() // (optional) the root directory of your elm project
