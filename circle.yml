@@ -8,6 +8,7 @@ dependencies:
   cache_directories:
     - ~/.cache/yarn
     - sysconfcpus
+    - test/fixture/elm-stuff
   pre:
     - if [ ! -d sysconfcpus/bin ];
       then
@@ -18,16 +19,16 @@ dependencies:
         cd ..;
       fi
   override:
-    - yarn global add elm@0.18.0
-    - mv ~/.config/yarn/global/node_modules/.bin/elm-make ~/.config/yarn/global/node_modules/.bin/elm-make-old
-    - printf '%s\n\n' '#!/bin/bash' '${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old' > ~/.config/yarn/global/node_modules/.bin/elm-make
-    - chmod +x ~/.config/yarn/global/node_modules/.bin/elm-make
+    - npm install -g elm@0.18.0
+    - mv $(npm config get prefix)/bin/elm-make $(npm config get prefix)/bin/elm-make-old
+    - printf '%s\n\n' '#!/bin/bash' '${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old' > $(npm config get prefix)/bin/elm-make
+    - chmod +x $(npm config get prefix)/bin/elm-make
+    - cd ${HOME}/${CIRCLE_PROJECT_REPONAME}/test/fixture
+    - elm-package install --yes
+    - cd ${HOME}/${CIRCLE_PROJECT_REPONAME}
     - yarn
 
 test:
-  cache_directories:
-    test/fixture/elm-stuff
-  pre:
-    - rm -rf test/fixture/elm-stuff/build-artifacts
   override:
+    - rm -rf test/fixture/elm-stuff/build-artifacts
     - yarn test
