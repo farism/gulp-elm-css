@@ -23,9 +23,9 @@ dependencies:
     - mv $(npm config get prefix)/bin/elm-make $(npm config get prefix)/bin/elm-make-old
     - printf '%s\n\n' '#!/bin/bash' '${HOME}/${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old' > $(npm config get prefix)/bin/elm-make
     - chmod +x $(npm config get prefix)/bin/elm-make
-    - cd ${HOME}/${CIRCLE_PROJECT_REPONAME}/test/fixture
-    - elm-package install --yes
-    - cd ${HOME}/${CIRCLE_PROJECT_REPONAME}
+    - cd ${HOME}/${CIRCLE_PROJECT_REPONAME}/test/fixture;
+      elm-package install --yes;
+      cd ${HOME}/${CIRCLE_PROJECT_REPONAME};
     - yarn
 
 test:
