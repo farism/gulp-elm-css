@@ -20,7 +20,7 @@ dependencies:
   override:
     - yarn global add elm@0.18.0
     - mv ~/.config/yarn/global/node_modules/.bin/elm-make ~/.config/yarn/global/node_modules/.bin/elm-make-old
-    - printf '%s\n\n' '#!/bin/bash' '${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make' > ~/.config/yarn/global/node_modules/.bin/elm-make
+    - printf '%s\n\n' '#!/bin/bash' '${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old' > ~/.config/yarn/global/node_modules/.bin/elm-make
     - chmod +x ~/.config/yarn/global/node_modules/.bin/elm-make
     - yarn
 
