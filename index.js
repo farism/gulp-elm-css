@@ -9,10 +9,10 @@ const path = require('path')
 const PLUGIN = 'gulp-elm-css'
 
 const defaults = {
-  cwd: process.cwd(),
   module: 'Stylesheets',
-  out: null,
+  output: '',
   port: 'files',
+  root: process.cwd(),
 }
 
 module.exports = function(options) {
@@ -28,10 +28,10 @@ module.exports = function(options) {
 
     const opts = Object.assign({}, defaults, options)
     const tmpDir = tmp.dirSync({ unsafeCleanup: true })
-    const dir = opts.out || tmpDir.name
+    const dir = opts.output || tmpDir.name
     const _this = this
 
-    elmCss(opts.cwd, file.path, dir, opts.module, opts.port)
+    elmCss(opts.root, file.path, dir, opts.module, opts.port)
       .catch(function(e) {
         tmpDir.removeCallback()
         _this.emit('error', new Error('gulp-elm-css: elm-css ' + e.message))
@@ -50,7 +50,7 @@ module.exports = function(options) {
                 } else {
                   _this.push(
                     new File({
-                      cwd: process.cwd(),
+                      root: opts.root,
                       path: path.basename(file),
                       contents,
                     })

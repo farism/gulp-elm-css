@@ -2,6 +2,25 @@
 
 Given an `*.elm` file, it will use [`elm-css`](https://github.com/rtfeldman/elm-css) to generate `*.css` files. A vinyl object will be emitted for each `*.css` file that is generated.
 
+#### Usage
+
+```js
+const elmCss = require('gulp-elm-css')
+
+gulp.src('Css.elm')
+  .pipe(elmCss({ module: 'Css.elm' }))
+```
+
+###### < options >
+```js
+options = {
+  root: process.cwd() // (optional) the root directory of your elm project
+  module: 'Stylesheets' // (optional) name of stylesheets module
+  output: '' // (optional) the tmp path to output css files to
+  port: 'files' // (optional) name of the port from which to read CSS results
+}
+```
+
 #### Example
 
 on the elm side
