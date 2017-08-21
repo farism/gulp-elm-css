@@ -7,8 +7,8 @@ machine:
 dependencies:
   cache_directories:
     - ~/.cache/yarn
+    - /opt/circleci/nodejs/v4.2.0
     - sysconfcpus
-    - test/fixture/elm-stuff
   pre:
     - if [ ! -d sysconfcpus/bin ];
       then
@@ -19,13 +19,15 @@ dependencies:
         cd ..;
       fi
   override:
-    - npm install -g elm@0.18.0
-    - mv $(npm config get prefix)/bin/elm-make $(npm config get prefix)/bin/elm-make-old
-    - printf '%s\n\n' '#!/bin/bash' '${HOME}/${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old --yes "$@"' > $(npm config get prefix)/bin/elm-make
-    - chmod +x $(npm config get prefix)/bin/elm-make
-    - yarn
+    - npm install -g elm@0.18.0;
+      mv $(npm config get prefix)/bin/elm-make $(npm config get prefix)/bin/elm-make-old;
+      printf '%s\n\n' '#!/bin/bash' '${HOME}/${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make-old' > $(npm config get prefix)/bin/elm-make;
+      chmod +x $(npm config get prefix)/bin/elm-make;
+      cd ${HOME}/${CIRCLE_PROJECT_REPONAME}/test/fixture;
+      elm-package install --yes;
+      cd ${HOME}/${CIRCLE_PROJECT_REPONAME};
+      yarn;
 
 test:
   override:
-    - rm -rf test/fixture/elm-stuff/build-artifacts
     - yarn test
