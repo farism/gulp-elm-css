@@ -1,14 +1,12 @@
 machine:
   environment:
-    SYSCONFCPUS_PATH: ${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin
-    BIN_PATH: ${HOME}/.config/yarn/global/node_modules/.bin
-    PATH: "$PATH:${SYSCONFCPUS_PATH}:${BIN_PATH}"
+    PATH: "$PATH:~/.config/yarn/global/node_modules/.bin"
   node:
     version: 4.2.0
 
 dependencies:
   cache_directories:
-    - ${HOME}/.cache/yarn
+    - ~/.cache/yarn
     - sysconfcpus
   pre:
     - if [ ! -d sysconfcpus/bin ];
@@ -21,9 +19,9 @@ dependencies:
       fi
   override:
     - yarn global add elm@0.18.0
-    - mv ${BIN_PATH}/elm-make ${BIN_PATH}/elm-make-old
-    - printf '%s\n\n' '#!/bin/bash' '${SYSCONFCPUS_PATH}/sysconfcpus -n 2 elm-make' > ${BIN_PATH}/elm-make
-    - chmod +x ${BIN_PATH}/elm-make
+    - mv ~/.config/yarn/global/node_modules/.bin/elm-make ~/.config/yarn/global/node_modules/.bin/elm-make-old
+    - printf '%s\n\n' '#!/bin/bash' '${CIRCLE_PROJECT_REPONAME}/sysconfcpus/bin/sysconfcpus -n 2 elm-make' > ~/.config/yarn/global/node_modules/.bin/elm-make
+    - chmod +x ~/.config/yarn/global/node_modules/.bin/elm-make
     - yarn
 
 test:
