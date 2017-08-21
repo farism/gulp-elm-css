@@ -6,9 +6,10 @@ machine:
 
 dependencies:
   cache_directories:
-    - ~/.cache/yarn
     - /opt/circleci/nodejs/v4.2.0
+    - ~/.cache/yarn
     - sysconfcpus
+    - test/fixture/elm-stuff/packages
   pre:
     - if [ ! -d sysconfcpus/bin ];
       then
