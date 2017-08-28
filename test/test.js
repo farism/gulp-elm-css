@@ -16,7 +16,7 @@ describe('gulp-elm-css', function() {
   var stream
 
   beforeEach(function() {
-    stream = elmCss({ root: path.join(__dirname, 'fixture') })
+    stream = elmCss({ cwd: path.join(__dirname, 'fixture') })
   })
 
   it('should work in buffer mode', function(done) {
