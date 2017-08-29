@@ -1,5 +1,7 @@
 # gulp-elm-css [![Circle CI](https://circleci.com/gh/farism/gulp-elm-css/tree/master.svg?style=svg)](https://circleci.com/gh/farism/gulp-elm-css/tree/master)
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/farism/gulp-elm-css.svg)](https://greenkeeper.io/)
+
 Given an `*.elm` file, it will use [`elm-css`](https://github.com/rtfeldman/elm-css) to generate `*.css` files. A vinyl object will be emitted for each `*.css` file that is generated.
 
 #### Usage
